@@ -8,7 +8,7 @@
 
 Guía avanzada e interactiva sobre **JSON** y **YAML**, implementada por completo, optimizada y finalizada. Reúne en una experiencia web moderna la teoría esencial de ambos formatos (historia, colecciones, reglas sintácticas, tipos de datos y ejemplos prácticos), una comparativa visual, un conversor JSON → YAML en tiempo real con validación, un quiz de autoevaluación y una referencia rápida. El diseño premium, accesible y responsive se rige por un sistema de diseño declarado en YAML.
 
-**Para verla:** abre `index.html` en el navegador, publícala con GitHub Pages (rama + carpeta raíz) o ejecuta `npm start` y visita <http://localhost:8000>.
+**Para verla:** abre https://sucret1921.github.io/Information-sobre-JSON-y-YAML/
 
 ---
 
