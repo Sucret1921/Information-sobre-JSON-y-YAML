@@ -1,0 +1,121 @@
+# ------------------------------------------------------------------
+#  Guía JSON & YAML — Design System
+#  Fuente única de verdad para tokens, componentes y motion.
+#  assets/css/tokens.css refleja estos valores (ver tests/tokens.test.mjs).
+# ------------------------------------------------------------------
+meta:
+  name: Guía JSON & YAML
+  version: 2.0.0
+  status: Guía Avanzada Finalizada
+  language: es
+  inspiration: [Apple, Linear, Stripe, Arc, Framer, Vercel, Raycast, Notion, Discord, Spotify]
+
+principles:
+  - id: clarity
+    rule: El contenido manda; la decoración nunca compite con el texto ni con el código.
+  - id: depth
+    rule: Profundidad con capas sutiles (bordes de 1px, brillo interior, desenfoque) en lugar de sombras duras.
+  - id: motion-with-purpose
+    rule: Cada animación comunica estado o jerarquía. Se desactiva con prefers-reduced-motion.
+  - id: accessible-by-default
+    rule: Contraste AA mínimo, foco visible siempre, navegación completa por teclado.
+  - id: zero-dependencies
+    rule: HTML, CSS y JavaScript nativos. Sin build, compatible con GitHub Pages.
+
+tokens:
+  color:
+    dark:
+      bg: "#07080c"
+      bg-elevated: "#0e1016"
+      surface: "#12141c"
+      surface-2: "#191c26"
+      border: "rgba(255, 255, 255, 0.08)"
+      border-strong: "rgba(255, 255, 255, 0.16)"
+      text: "#eceef4"
+      text-muted: "#9aa0b2"
+      text-subtle: "#6b7186"
+    light:
+      bg: "#fbfbfd"
+      bg-elevated: "#ffffff"
+      surface: "#ffffff"
+      surface-2: "#f3f4f8"
+      border: "rgba(15, 18, 30, 0.08)"
+      border-strong: "rgba(15, 18, 30, 0.16)"
+      text: "#0d0f17"
+      text-muted: "#555b6e"
+      text-subtle: "#80869a"
+    brand:
+      accent: "#7c6cff"
+      accent-2: "#38bdf8"
+      yaml: "#ff5d7a"
+      json: "#f5b83d"
+      success: "#34d399"
+      danger: "#f87171"
+  typography:
+    family:
+      sans: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+      mono: "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    scale:            # fluid, clamp(min, preferred, max)
+      xs: 0.75rem
+      sm: 0.875rem
+      base: 1rem
+      lg: 1.125rem
+      xl: "clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem)"
+      2xl: "clamp(1.6rem, 1.3rem + 1.4vw, 2.25rem)"
+      3xl: "clamp(2.1rem, 1.5rem + 2.8vw, 3.5rem)"
+      display: "clamp(2.5rem, 1.5rem + 3.6vw, 4.5rem)"
+    line-height: { tight: 1.08, snug: 1.3, body: 1.7 }
+    tracking: { display: "-0.04em", heading: "-0.02em", eyebrow: "0.14em" }
+  space: [0.25rem, 0.5rem, 0.75rem, 1rem, 1.5rem, 2rem, 3rem, 4rem, 6rem, 8rem]
+  radius: { sm: 8px, md: 12px, lg: 18px, xl: 28px, pill: 999px }
+  layout:
+    container: 1180px
+    prose: 70ch
+    gutter: "clamp(1rem, 4vw, 2rem)"
+    nav-height: 64px
+  motion:
+    ease-out: "cubic-bezier(0.16, 1, 0.3, 1)"
+    ease-spring: "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    duration: { fast: 150ms, base: 260ms, slow: 600ms, cinematic: 900ms }
+    reduced-motion: disable-transforms-keep-opacity
+
+components:
+  navbar:
+    behaviour: [sticky, glass-on-scroll, scroll-progress, active-section, mobile-sheet]
+  button:
+    variants: [primary, secondary, ghost, icon]
+    sizes: [sm, md, lg]
+    states: [default, hover, active, focus-visible, disabled, loading]
+  card:
+    variants: [default, feature, interactive, spotlight]
+    states: [hover, focus-within]
+  code-block:
+    features: [syntax-highlight, filename-header, language-badge, copy-with-feedback]
+  tabs:
+    a11y: roving-tabindex
+    variants: [segmented, underline]
+  badge:
+    variants: [neutral, yaml, json, success, danger]
+  timeline:
+    usage: Historia de versiones de YAML
+  comparison-table:
+    usage: YAML vs JSON
+  playground:
+    features: [live-conversion, debounce, validation, error-line-column, stats, copy, format, minify]
+    states: [idle, processing, valid, invalid]
+  quiz:
+    features: [instant-feedback, score, retry]
+  command-palette:
+    shortcut: "Ctrl/⌘ + K"
+    a11y: [dialog, combobox, listbox, focus-trap]
+  toast:
+    a11y: aria-live-polite
+  skeleton:
+    usage: Imágenes externas y estados de carga
+  onboarding:
+    pattern: Ruta de aprendizaje en 3 pasos + pista contextual en la primera visita
+
+pages:
+  - id: home
+    file: index.html
+    sections: [hero, ruta, yaml, json, comparativa, playground, quiz, chuleta]
