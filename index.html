@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Guía JSON &amp; YAML</title>
+  <meta name="description" content="Guía avanzada e interactiva sobre JSON y YAML: sintaxis, historia, comparativa, conversor en vivo y autoevaluación.">
+  <meta name="theme-color" content="#07080c" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+  <meta property="og:title" content="Guía JSON &amp; YAML">
+  <meta property="og:description" content="Aprende JSON y YAML con una guía moderna e interactiva.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237c6cff'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='700' text-anchor='middle' fill='white'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script>
+    // Aplica el tema guardado antes del primer pintado (evita parpadeo)
+    (function () {
+      var d = document.documentElement;
+      d.classList.remove('no-js'); d.classList.add('js');
+      try { var t = localStorage.getItem('guide-theme'); if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t); } catch (e) {}
+    })();
+  </script>
+  <script defer src="assets/js/lib/highlight.js"></script>
+  <script defer src="assets/js/lib/convert.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <!-- ============================ NAVBAR ============================ -->
+  <header class="nav" data-nav>
+    <div class="nav__inner container">
+      <a class="brand" href="#inicio" aria-label="Guía JSON y YAML, inicio">
+        <span class="brand__mark" aria-hidden="true">{ }</span>
+        <span class="brand__text">JSON<span class="brand__amp">&amp;</span>YAML</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Secciones principales">
+        <a href="#yaml" data-nav-link="yaml">YAML</a>
+        <a href="#json" data-nav-link="json">JSON</a>
+        <a href="#comparativa" data-nav-link="comparativa">Comparativa</a>
+        <a href="#playground" data-nav-link="playground">Playground</a>
+        <a href="#quiz" data-nav-link="quiz">Quiz</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="search-trigger" type="button" data-palette-open aria-label="Buscar (Ctrl+K)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="search-trigger__label">Buscar…</span>
+          <kbd data-kbd-mod>Ctrl</kbd><kbd>K</kbd>
+        </button>
+        <button class="btn btn--icon btn--ghost" type="button" data-theme-toggle aria-label="Cambiar tema">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="btn btn--icon btn--ghost nav__menu" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+          <span class="burger" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+      <nav aria-label="Menú móvil">
+        <a href="#ruta">Empieza aquí</a>
+        <a href="#yaml">YAML</a>
+        <a href="#json">JSON</a>
+        <a href="#comparativa">Comparativa</a>
+        <a href="#playground">Playground</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#chuleta">Chuleta</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <!-- ============================ HERO ============================ -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero__bg" aria-hidden="true">
+        <span class="orb orb--1"></span><span class="orb orb--2"></span><span class="orb orb--3"></span>
+        <span class="grid-fade"></span>
+      </div>
+
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <a class="pill reveal" href="#playground">
+            <span class="pill__dot" aria-hidden="true"></span>
+            Nuevo · Conversor JSON → YAML en vivo
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+          </a>
+          <h1 class="hero__title reveal" id="hero-title" style="--d: 80ms">
+            Domina <span class="text-gradient">JSON</span> y <span class="text-gradient text-gradient--alt">YAML</span>, los idiomas de los datos.
+          </h1>
+          <p class="hero__lead reveal" style="--d: 160ms">
+            Una guía clara y visual sobre los dos formatos de serialización más usados en APIs, configuración y DevOps, con ejemplos, comparativa, un conversor y un test para comprobar lo aprendido.
+          </p>
+          <div class="hero__cta reveal" style="--d: 240ms">
+            <a class="btn btn--primary btn--lg" href="#ruta">
+              Empezar la guía
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--secondary btn--lg" href="#playground">Abrir playground</a>
+          </div>
+          <dl class="hero__stats reveal" style="--d: 320ms">
+            <div><dt>Versiones de YAML</dt><dd>3</dd></div>
+            <div><dt>Tipos de dato JSON</dt><dd>6</dd></div>
+            <div><dt>Lectura</dt><dd>~8 min</dd></div>
+          </dl>
+        </div>
+
+        <!-- Tarjeta hero: el mismo dato en dos formatos -->
+        <div class="hero__visual reveal" style="--d: 200ms">
+          <div class="window" data-hero-window>
+            <div class="window__bar">
+              <span class="window__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <div class="segmented" role="tablist" aria-label="Formato del ejemplo">
+                <button role="tab" id="hero-tab-yaml" aria-selected="true" aria-controls="hero-panel-yaml" data-hero-tab="yaml">config.yaml</button>
+                <button role="tab" id="hero-tab-json" aria-selected="false" aria-controls="hero-panel-json" tabindex="-1" data-hero-tab="json">config.json</button>
+                <span class="segmented__thumb" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="window__body">
+              <pre class="code" role="tabpanel" id="hero-panel-yaml" aria-labelledby="hero-tab-yaml" data-hero-panel="yaml"><code data-lang="yaml"># Configuración de la app
+app: guia-json-yaml
+version: 2.0
+publico: true
+idiomas:
+  - es
+  - en
+autor:
+  nombre: Pepito Conejo
+  edad: 25</code></pre>
+              <pre class="code" role="tabpanel" id="hero-panel-json" aria-labelledby="hero-tab-json" data-hero-panel="json" hidden><code data-lang="json">{
+  "app": "guia-json-yaml",
+  "version": 2.0,
+  "publico": true,
+  "idiomas": ["es", "en"],
+  "autor": {
+    "nombre": "Pepito Conejo",
+    "edad": 25
+  }
+}</code></pre>
+            </div>
+          </div>
+          <p class="hero__caption">Mismos datos, dos sintaxis. Pasa el ratón por encima para pausar la animación.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ RUTA / ONBOARDING ============================ -->
+    <section class="section" id="ruta" aria-labelledby="ruta-title">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Empieza aquí</p>
+          <h2 class="section__title" id="ruta-title">Tu ruta de aprendizaje en 3 pasos</h2>
+          <p class="section__lead">Sigue el orden recomendado o salta directamente a lo que necesites. Pulsa <kbd data-kbd-mod>Ctrl</kbd> <kbd>K</kbd> en cualquier momento para buscar.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="card card--interactive card--spotlight reveal" style="--d: 0ms">
+            <a class="card__link" href="#yaml">
+              <span class="step__num">01</span>
+              <span class="badge badge--yaml">YAML</span>
+              <h3 class="card__title">Aprende YAML</h3>
+              <p class="card__text">Historia, colecciones, secuencias, mapas y comentarios.</p>
+              <span class="card__cta">Leer sección <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+          </li>
+          <li class="card card--interactive card--spotlight reveal" style="--d: 80ms">
+            <a class="card__link" href="#json">
+              <span class="step__num">02</span>
+              <span class="badge badge--json">JSON</span>
+              <h3 class="card__title">Aprende JSON</h3>
+              <p class="card__text">Arrays, objetos, tipos de datos y reglas sintácticas.</p>
+              <span class="card__cta">Leer sección <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+          </li>
+          <li class="card card--interactive card--spotlight reveal" style="--d: 160ms">
+            <a class="card__link" href="#playground">
+              <span class="step__num">03</span>
+              <span class="badge badge--success">Práctica</span>
+              <h3 class="card__title">Practica y evalúate</h3>
+              <p class="card__text">Convierte tus propios datos y pon a prueba lo aprendido.</p>
+              <span class="card__cta">Ir al playground <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================ GUÍA (TOC + ARTÍCULO) ============================ -->
+    <div class="container guide">
+      <aside class="toc" aria-label="Índice">
+        <p class="toc__title">Índice</p>
+        <ol>
+          <li><a href="#yaml" data-toc="yaml">1. YAML</a>
+            <ol>
+              <li><a href="#yaml-historia" data-toc="yaml-historia">Historia y versiones</a></li>
+              <li><a href="#yaml-colecciones" data-toc="yaml-colecciones">Colecciones</a></li>
+            </ol>
+          </li>
+          <li><a href="#json" data-toc="json">2. JSON</a>
+            <ol>
+              <li><a href="#json-reglas" data-toc="json-reglas">Reglas sintácticas</a></li>
+              <li><a href="#json-tipos" data-toc="json-tipos">Tipos de datos</a></li>
+              <li><a href="#json-ejemplos" data-toc="json-ejemplos">Ejemplos prácticos</a></li>
+            </ol>
+          </li>
+          <li><a href="#comparativa" data-toc="comparativa">3. Comparativa</a></li>
+        </ol>
+      </aside>
+
+      <article class="article">
+        <!-- ============================ YAML ============================ -->
+        <section class="chapter" id="yaml" aria-labelledby="yaml-title">
+          <header class="chapter__header reveal">
+            <span class="chapter__icon chapter__icon--yaml" aria-hidden="true">Y</span>
+            <div>
+              <p class="eyebrow eyebrow--yaml">Capítulo 1</p>
+              <h2 class="chapter__title" id="yaml-title">YAML</h2>
+            </div>
+          </header>
+
+          <div class="prose reveal">
+            <p class="lead"><strong>YAML</strong> (<em>YAML Ain't Markup Language</em>) es un formato de texto pensado para la serialización de datos, propuesto como alternativa a XML. Su sintaxis combina conceptos de varios lenguajes como HTML, C, Perl y Python.</p>
+            <p>El formato fue propuesto por <strong>Clark Evans</strong> a principios de 2001 y se dio a conocer a través de su página web <a href="https://yaml.org/" rel="noopener" target="_blank">yaml.org</a>. YAML no se ha publicado como norma por ningún organismo de normalización.</p>
+          </div>
+
+          <figure class="media reveal">
+            <div class="media__frame skeleton" data-skeleton>
+              <img src="https://uxwing.com/wp-content/themes/uxwing/download/file-and-folder-type/yaml-file-icon.png"
+                   alt="Icono de archivo YAML" width="160" height="160" loading="lazy" decoding="async">
+            </div>
+            <figcaption>Los archivos YAML usan las extensiones <code>.yaml</code> o <code>.yml</code>.</figcaption>
+          </figure>
+
+          <h3 class="h3 reveal" id="yaml-historia">Historia y versiones</h3>
+          <ol class="timeline reveal" aria-label="Versiones publicadas de YAML">
+            <li class="timeline__item">
+              <time datetime="2004-01">Enero 2004</time>
+              <p class="timeline__title">YAML 1.0</p>
+              <p class="timeline__text">Primera especificación publicada.</p>
+            </li>
+            <li class="timeline__item">
+              <time datetime="2004-12">Diciembre 2004</time>
+              <p class="timeline__title">YAML 1.1</p>
+              <p class="timeline__text">Amplía tipos y etiquetas.</p>
+            </li>
+            <li class="timeline__item timeline__item--current">
+              <time datetime="2009-10">Octubre 2009</time>
+              <p class="timeline__title">YAML 1.2 <span class="badge badge--success">Actual</span></p>
+              <p class="timeline__text">Alinea YAML con JSON: casi cualquier JSON es YAML válido.</p>
+            </li>
+          </ol>
+
+          <h3 class="h3 reveal" id="yaml-colecciones">Colecciones</h3>
+          <div class="prose reveal">
+            <p>Las colecciones de bloques de YAML utilizan la <strong>sangría</strong> para definir el alcance y comienzan cada entrada en su propia línea.</p>
+          </div>
+
+          <ul class="feature-grid reveal" role="list">
+            <li class="card card--feature">
+              <span class="feature__glyph" aria-hidden="true">- </span>
+              <h4 class="card__title">Secuencias</h4>
+              <p class="card__text">Cada entrada se indica con un guion y un espacio (<code>- </code>).</p>
+            </li>
+            <li class="card card--feature">
+              <span class="feature__glyph" aria-hidden="true">: </span>
+              <h4 class="card__title">Mapas</h4>
+              <p class="card__text">Dos puntos y un espacio (<code>: </code>) separan cada par clave/valor.</p>
+            </li>
+            <li class="card card--feature">
+              <span class="feature__glyph" aria-hidden="true">#</span>
+              <h4 class="card__title">Comentarios</h4>
+              <p class="card__text">Empiezan con una almohadilla u octothorpe (<code>#</code>), también llamado <em>hash</em> o <em>signo numérico</em>.</p>
+            </li>
+          </ul>
+
+          <div class="code-grid reveal">
+            <figure class="code-card">
+              <figcaption class="code-card__head"><span class="badge badge--yaml">YAML</span> secuencia.yaml</figcaption>
+              <pre class="code"><code data-lang="yaml">- Mark McGwire
+- Sammy Sosa
+- Ken Griffey</code></pre>
+            </figure>
+            <figure class="code-card">
+              <figcaption class="code-card__head"><span class="badge badge--yaml">YAML</span> mapa.yaml</figcaption>
+              <pre class="code"><code data-lang="yaml">hr:  65    # Home runs
+avg: 0.278 # Batting average
+rbi: 147   # Runs Batted In</code></pre>
+            </figure>
+          </div>
+
+          <aside class="callout callout--tip reveal" role="note">
+            <strong>Consejo:</strong> usa siempre espacios para sangrar en YAML; los tabuladores no están permitidos para la indentación.
+          </aside>
+        </section>
+
+        <!-- ============================ JSON ============================ -->
+        <section class="chapter" id="json" aria-labelledby="json-title">
+          <header class="chapter__header reveal">
+            <span class="chapter__icon chapter__icon--json" aria-hidden="true">{ }</span>
+            <div>
+              <p class="eyebrow eyebrow--json">Capítulo 2</p>
+              <h2 class="chapter__title" id="json-title">JSON</h2>
+            </div>
+          </header>
+
+          <div class="prose reveal">
+            <p class="lead"><strong>JSON</strong> (<em>JavaScript Object Notation</em>) es el formato de intercambio de datos que hace posible la comunicación entre aplicaciones en la web.</p>
+            <p>Se ha convertido en un formato muy popular entre los desarrolladores gracias a su texto <strong>legible por humanos</strong>, ligero, que requiere menos codificación y se procesa rápidamente.</p>
+          </div>
+
+          <figure class="media media--wide reveal">
+            <div class="media__frame skeleton" data-skeleton>
+              <img src="https://github.com/Sucret1921/JSONYAMAL/assets/153021297/664dda6b-0760-40a1-8721-3130db03356c"
+                   alt="Ilustración del formato JSON" loading="lazy" decoding="async">
+            </div>
+          </figure>
+
+          <h3 class="h3 reveal" id="json-reglas">Reglas sintácticas</h3>
+          <div class="prose reveal">
+            <p>Las reglas sintácticas de JSON son bastante sencillas. Existen dos tipos de elementos estructurales:</p>
+          </div>
+
+          <div class="rule-grid reveal">
+            <div class="card card--feature">
+              <span class="feature__glyph" aria-hidden="true">[ ]</span>
+              <h4 class="card__title">Matrices (arrays)</h4>
+              <p class="card__text">Listas de valores separados por comas, escritas entre corchetes <code>[ ]</code>.</p>
+            </div>
+            <div class="card card--feature">
+              <span class="feature__glyph" aria-hidden="true">{ }</span>
+              <h4 class="card__title">Objetos (objects)</h4>
+              <p class="card__text">Listas de parejas nombre/valor separadas por comas, escritas entre llaves <code>{ }</code>. El nombre y el valor se separan con dos puntos <code>:</code> y el nombre va siempre entre comillas dobles.</p>
+            </div>
+          </div>
+
+          <aside class="callout reveal" role="note">
+            Los espacios en blanco y los saltos de línea <strong>no son significativos</strong>: puede haber cualquier número de ellos separando los elementos o símbolos del documento.
+          </aside>
+
+          <h3 class="h3 reveal" id="json-tipos">Tipos de datos</h3>
+          <ul class="chips reveal" role="list">
+            <li><code class="tok-string">"cadena"</code><span>String</span></li>
+            <li><code class="tok-number">3.14</code><span>Number</span></li>
+            <li><code class="tok-bool">true</code><span>Boolean</span></li>
+            <li><code class="tok-bool">null</code><span>Null</span></li>
+            <li><code class="tok-punct">[ … ]</code><span>Array</span></li>
+            <li><code class="tok-punct">{ … }</code><span>Object</span></li>
+          </ul>
+
+          <h3 class="h3 reveal" id="json-ejemplos">Ejemplos prácticos</h3>
+          <div class="code-grid reveal">
+            <figure class="code-card">
+              <figcaption class="code-card__head"><span class="badge badge--json">JSON</span> array.json</figcaption>
+              <pre class="code"><code data-lang="json">[1, "pepe", 3.14, "Pepito Conejo"]</code></pre>
+            </figure>
+            <figure class="code-card">
+              <figcaption class="code-card__head"><span class="badge badge--json">JSON</span> objeto.json</figcaption>
+              <pre class="code"><code data-lang="json">{"nombre": "Pepito Conejo", "edad": 25, "carnet de conducir": true}</code></pre>
+            </figure>
+          </div>
+          <figure class="code-card reveal">
+            <figcaption class="code-card__head"><span class="badge badge--json">JSON</span> personas.json · array de objetos</figcaption>
+            <pre class="code"><code data-lang="json">[
+  {
+    "nombre": "Pepito Conejo",
+    "edad": 25,
+    "carnet de conducir": true
+  },
+  {
+    "nombre": "Ana Barberá",
+    "edad": 90,
+    "carnet de conducir": false
+  }
+]</code></pre>
+          </figure>
+        </section>
+
+        <!-- ============================ COMPARATIVA ============================ -->
+        <section class="chapter" id="comparativa" aria-labelledby="comparativa-title">
+          <header class="chapter__header reveal">
+            <span class="chapter__icon" aria-hidden="true">⇄</span>
+            <div>
+              <p class="eyebrow">Capítulo 3</p>
+              <h2 class="chapter__title" id="comparativa-title">YAML vs JSON</h2>
+            </div>
+          </header>
+
+          <div class="table-wrap reveal">
+            <table class="compare">
+              <caption class="sr-only">Comparativa entre YAML y JSON</caption>
+              <thead>
+                <tr><th scope="col">Característica</th><th scope="col"><span class="badge badge--yaml">YAML</span></th><th scope="col"><span class="badge badge--json">JSON</span></th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Estructura</th><td>Sangría</td><td>Llaves y corchetes</td></tr>
+                <tr><th scope="row">Comentarios</th><td class="yes">Sí, con <code>#</code></td><td class="no">No</td></tr>
+                <tr><th scope="row">Comillas en claves</th><td>Opcionales</td><td>Obligatorias (dobles)</td></tr>
+                <tr><th scope="row">Legibilidad</th><td>Muy alta</td><td>Alta</td></tr>
+                <tr><th scope="row">Velocidad de análisis</th><td>Menor</td><td>Muy alta</td></tr>
+                <tr><th scope="row">Uso típico</th><td>Configuración (Docker Compose, Kubernetes, CI)</td><td>APIs web e intercambio de datos</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <figure class="code-card reveal">
+            <figcaption class="code-card__head">
+              <div class="segmented segmented--sm" role="tablist" aria-label="Formato de la comparación" data-tabs>
+                <button role="tab" id="cmp-tab-yaml" aria-selected="true" aria-controls="cmp-panel-yaml">YAML</button>
+                <button role="tab" id="cmp-tab-json" aria-selected="false" aria-controls="cmp-panel-json" tabindex="-1">JSON</button>
+                <span class="segmented__thumb" aria-hidden="true"></span>
+              </div>
+              <span class="code-card__note">Los mismos datos de personas.json</span>
+            </figcaption>
+            <pre class="code" role="tabpanel" id="cmp-panel-yaml" aria-labelledby="cmp-tab-yaml"><code data-lang="yaml">- nombre: Pepito Conejo
+  edad: 25
+  carnet de conducir: true
+- nombre: Ana Barberá
+  edad: 90
+  carnet de conducir: false</code></pre>
+            <pre class="code" role="tabpanel" id="cmp-panel-json" aria-labelledby="cmp-tab-json" hidden><code data-lang="json">[
+  { "nombre": "Pepito Conejo", "edad": 25, "carnet de conducir": true },
+  { "nombre": "Ana Barberá", "edad": 90, "carnet de conducir": false }
+]</code></pre>
+          </figure>
+        </section>
+      </article>
+    </div>
+
+    <!-- ============================ PLAYGROUND ============================ -->
+    <section class="section section--band" id="playground" aria-labelledby="playground-title">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Playground</p>
+          <h2 class="section__title" id="playground-title">Conversor JSON → YAML en vivo</h2>
+          <p class="section__lead">Escribe o pega JSON. Se valida mientras escribes y verás su equivalente en YAML al instante.</p>
+        </header>
+
+        <div class="playground reveal" data-playground>
+          <div class="pane">
+            <div class="pane__head">
+              <span class="badge badge--json">JSON</span>
+              <span class="status" data-status data-state="valid" role="status" aria-live="polite">
+                <span class="status__dot" aria-hidden="true"></span><span data-status-text>JSON válido</span>
+              </span>
+              <div class="pane__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-action="format">Formatear</button>
+                <button class="btn btn--ghost btn--sm" type="button" data-action="minify">Minificar</button>
+                <button class="btn btn--ghost btn--sm" type="button" data-action="sample">Ejemplo</button>
+              </div>
+            </div>
+            <label class="sr-only" for="json-input">Entrada JSON</label>
+            <textarea class="editor" id="json-input" spellcheck="false" autocomplete="off" autocapitalize="off" data-input>[
+  {
+    "nombre": "Pepito Conejo",
+    "edad": 25,
+    "carnet de conducir": true
+  },
+  {
+    "nombre": "Ana Barberá",
+    "edad": 90,
+    "carnet de conducir": false
+  }
+]</textarea>
+            <p class="pane__error" data-error hidden></p>
+          </div>
+
+          <div class="pane pane--output">
+            <div class="pane__head">
+              <span class="badge badge--yaml">YAML</span>
+              <span class="pane__stats" data-stats></span>
+              <div class="pane__actions">
+                <button class="btn btn--secondary btn--sm" type="button" data-copy-target="[data-output]">Copiar YAML</button>
+              </div>
+            </div>
+            <div class="output-wrap" data-output-wrap>
+              <div class="skeleton-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              <pre class="code code--output" tabindex="0" aria-label="Resultado YAML"><code data-output data-lang="yaml"></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ QUIZ ============================ -->
+    <section class="section" id="quiz" aria-labelledby="quiz-title">
+      <div class="container container--narrow">
+        <header class="section__header section__header--center reveal">
+          <p class="eyebrow">Autoevaluación</p>
+          <h2 class="section__title" id="quiz-title">¿Cuánto has aprendido?</h2>
+          <p class="section__lead">Cuatro preguntas rápidas con respuesta inmediata.</p>
+        </header>
+
+        <div class="quiz card reveal" data-quiz>
+          <div class="quiz__progress" aria-hidden="true"><span data-quiz-bar></span></div>
+          <div data-quiz-body></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ CHULETA ============================ -->
+    <section class="section section--tight" id="chuleta" aria-labelledby="chuleta-title">
+      <div class="container">
+        <header class="section__header reveal">
+          <p class="eyebrow">Chuleta</p>
+          <h2 class="section__title" id="chuleta-title">Referencia rápida</h2>
+        </header>
+        <div class="cheats reveal">
+          <div class="card card--spotlight">
+            <h3 class="card__title"><span class="badge badge--yaml">YAML</span></h3>
+            <dl class="cheat">
+              <div><dt><code>clave: valor</code></dt><dd>Par clave/valor</dd></div>
+              <div><dt><code>- elemento</code></dt><dd>Elemento de una secuencia</dd></div>
+              <div><dt><code># texto</code></dt><dd>Comentario</dd></div>
+              <div><dt><code>2 espacios</code></dt><dd>Nivel de anidación</dd></div>
+            </dl>
+          </div>
+          <div class="card card--spotlight">
+            <h3 class="card__title"><span class="badge badge--json">JSON</span></h3>
+            <dl class="cheat">
+              <div><dt><code>{ "k": v }</code></dt><dd>Objeto</dd></div>
+              <div><dt><code>[ a, b ]</code></dt><dd>Array</dd></div>
+              <div><dt><code>"texto"</code></dt><dd>Siempre comillas dobles</dd></div>
+              <div><dt><code>true · null</code></dt><dd>Booleanos y nulo</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p><span class="brand__mark brand__mark--sm" aria-hidden="true">{ }</span> Guía JSON &amp; YAML · <span class="badge badge--success">Guía Avanzada Finalizada</span></p>
+      <p class="footer__links"><a href="#inicio">Volver arriba ↑</a></p>
+    </div>
+  </footer>
+
+  <!-- ============================ COMMAND PALETTE ============================ -->
+  <div class="palette" data-palette hidden>
+    <div class="palette__backdrop" data-palette-close></div>
+    <div class="palette__panel" role="dialog" aria-modal="true" aria-label="Buscar en la guía">
+      <div class="palette__search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" placeholder="Buscar secciones o acciones…" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" data-palette-input>
+        <kbd>Esc</kbd>
+      </div>
+      <ul class="palette__list" id="palette-list" role="listbox" aria-label="Resultados" data-palette-list></ul>
+      <div class="palette__foot"><span><kbd>↑</kbd><kbd>↓</kbd> navegar</span><span><kbd>↵</kbd> abrir</span></div>
+    </div>
+  </div>
+
+  <div class="toasts" aria-live="polite" aria-atomic="true" data-toasts></div>
+
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+</body>
+</html>
